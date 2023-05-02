@@ -1,0 +1,22 @@
+{% extends './base.html' %} {% block tittle %} My Account {% endblock tittle %}
+{% block content %}
+<h1 class="text-center mt-2">{{capitalize_username}}'s account</h1>
+<div class="container account-container">
+  <div class="account-posts">
+    <h1 class="mb-2">Posts</h1>
+    <hr />
+    <div class="posts-wrapper">
+      {% for post in posts %}
+      <div class="blog">
+        <h1>{{post.title}}</h1>
+        <p>{{post.body}}</p>
+        <a href="{% url 'post_detail' post.id %}">Read more</a>
+      </div>
+      <hr />
+      {% empty %}
+      <h1>No posts to show</h1>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock content %}

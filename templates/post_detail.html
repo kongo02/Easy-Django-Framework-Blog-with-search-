@@ -1,0 +1,59 @@
+{% extends './base.html' %} {% block content %}
+<div class="container text-center p-4">
+  <div class="row align-items-start">
+    <div class="col">
+      <div class="card w-75 mb-3 col-6">
+        <div class="card-body">
+          <h5 class="card-title">{{ post.title }}</h5>
+          <p class="card-text">{{post.body}}</p>
+          <h6 class="card-subtitle mb-2 text-body-secondary">
+            Author - {{ post.author }}
+          </h6>
+          {% if request.user == post.author %}
+          <a href="{% url 'post_delete' post.id %}"
+            ><button type="button" class="btn btn-danger">Delete</button></a
+          >
+          <a href="{% url 'post_update' post.id %}"
+            ><button type="button" class="btn btn-primary">Update</button></a
+          >
+          {% endif %}
+        </div>
+        <div style="color: blue" class="comments-container">
+          <p class="bs-info-text-emphasis">
+            {{post.comment_set.all.count}} Comments
+          </p>
+          {% if request.user.is_authenticated %}
+          <form method="POST" action="">
+            {% csrf_token %}
+            <input
+              type="text"
+              class=""
+              name="comment"
+              placeholder="Type your Comment here..."
+            />
+          </form>
+          {% endif %}
+          <figure>
+            {% for comment in post.comment_set.all %}
+            <blockquote class="blockquote">
+              <p>{{comment.author}}</p>
+            </blockquote>
+
+            <figcaption class="blockquote-footer">
+              <p>
+                {{comment.comment}}--<cite title=""
+                  >{{comment.created|timesince}} ago</cite
+                >
+              </p>
+            </figcaption>
+
+            <hr />
+            {% endfor %}
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
